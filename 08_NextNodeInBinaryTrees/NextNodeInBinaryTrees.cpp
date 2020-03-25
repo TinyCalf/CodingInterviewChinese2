@@ -8,13 +8,13 @@ https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
 *******************************************************************/
 
 //==================================================================
-// ¡¶½£Ö¸Offer¡ª¡ªÃûÆóÃæÊÔ¹Ù¾«½²µäÐÍ±à³ÌÌâ¡·´úÂë
-// ×÷Õß£ººÎº£ÌÎ
+// ï¿½ï¿½ï¿½ï¿½Ö¸Offerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¹Ù¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í±ï¿½ï¿½ï¿½â¡·ï¿½ï¿½ï¿½ï¿½
+// ï¿½ï¿½ï¿½ß£ï¿½ï¿½Îºï¿½ï¿½ï¿½
 //==================================================================
 
-// ÃæÊÔÌâ8£º¶þ²æÊ÷µÄÏÂÒ»¸ö½áµã
-// ÌâÄ¿£º¸ø¶¨Ò»¿Ã¶þ²æÊ÷ºÍÆäÖÐµÄÒ»¸ö½áµã£¬ÈçºÎÕÒ³öÖÐÐò±éÀúË³ÐòµÄÏÂÒ»¸ö½áµã£¿
-// Ê÷ÖÐµÄ½áµã³ýÁËÓÐÁ½¸ö·Ö±ðÖ¸Ïò×óÓÒ×Ó½áµãµÄÖ¸ÕëÒÔÍâ£¬»¹ÓÐÒ»¸öÖ¸Ïò¸¸½áµãµÄÖ¸Õë¡£
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½8ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½
+// ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ã£¿
+// ï¿½ï¿½ï¿½ÐµÄ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½â£¬ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ö¸ï¿½ò¸¸½ï¿½ï¿½ï¿½Ö¸ï¿½ë¡£
 
 #include <stdio.h>
 
@@ -26,37 +26,81 @@ struct BinaryTreeNode
     BinaryTreeNode*        m_pParent;
 };
 
-BinaryTreeNode* GetNext(BinaryTreeNode* pNode)
-{
-    if(pNode == nullptr)
+BinaryTreeNode* GetNext(BinaryTreeNode* pNode) {
+    if(pNode == nullptr) {
         return nullptr;
-
-    BinaryTreeNode* pNext = nullptr;
-    if(pNode->m_pRight != nullptr)
-    {
-        BinaryTreeNode* pRight = pNode->m_pRight;
-        while(pRight->m_pLeft != nullptr)
-            pRight = pRight->m_pLeft;
-
-        pNext = pRight;
     }
-    else if(pNode->m_pParent != nullptr)
-    {
-        BinaryTreeNode* pCurrent = pNode;
-        BinaryTreeNode* pParent = pNode->m_pParent;
-        while(pParent != nullptr && pCurrent == pParent->m_pRight)
-        {
-            pCurrent = pParent;
-            pParent = pParent->m_pParent;
+
+    //1. æœ‰å³å­èŠ‚ç‚¹ï¼Œåˆ™nextä¸ºå³å­èŠ‚ç‚¹ä¸­æœ€å·¦èŠ‚ç‚¹
+    if(pNode->m_pRight != nullptr) {
+        BinaryTreeNode* p = pNode->m_pRight;
+        while(p->m_pLeft != nullptr) {
+            p = p->m_pLeft;
         }
-
-        pNext = pParent;
+        return p;
     }
 
-    return pNext;
+    //2. æ— å³å­èŠ‚ç‚¹ æ— çˆ¶äº²èŠ‚ç‚¹
+    else if (pNode->m_pParent == nullptr){
+        return nullptr;
+    }
+
+    //3. æ— å³å­èŠ‚ç‚¹ï¼Œæ˜¯çˆ¶èŠ‚ç‚¹çš„å·¦å­èŠ‚ç‚¹ï¼Œ nextä¸ºçˆ¶äº²èŠ‚ç‚¹
+    else if(pNode->m_pParent->m_pLeft == pNode) {
+        return pNode->m_pParent;
+    }
+
+    //4. æ— å³å­èŠ‚ç‚¹ï¼Œæ˜¯çˆ¶èŠ‚ç‚¹çš„å³å­èŠ‚ç‚¹
+    else {
+        BinaryTreeNode* p = pNode;
+        while(p->m_pParent != nullptr) {
+            BinaryTreeNode* parent = p->m_pParent;
+            if(parent->m_pParent == nullptr) {
+                return nullptr;
+            }
+            if(parent->m_pParent->m_pLeft == parent) {
+                return parent->m_pParent;
+            }
+            p = p->m_pParent;
+        }
+    }
+
+    return nullptr;
 }
 
-// ==================== ¸¨Öú´úÂëÓÃÀ´¹¹½¨¶þ²æÊ÷ ====================
+// BinaryTreeNode* GetNext(BinaryTreeNode* pNode)
+// {
+//     if(pNode == nullptr)
+//         return nullptr;
+
+//     BinaryTreeNode* pNext = nullptr;
+//     if(pNode->m_pRight != nullptr)
+//     {
+//         BinaryTreeNode* pRight = pNode->m_pRight;
+//         while(pRight->m_pLeft != nullptr)
+//             pRight = pRight->m_pLeft;
+
+//         pNext = pRight;
+//     }
+//     else if(pNode->m_pParent != nullptr)
+//     {
+//         BinaryTreeNode* pCurrent = pNode;
+//         BinaryTreeNode* pParent = pNode->m_pParent;
+//         while(pParent != nullptr && pCurrent == pParent->m_pRight)
+//         {
+//             pCurrent = pParent;
+//             pParent = pParent->m_pParent;
+//         }
+
+//         pNext = pParent;
+//     }
+
+//     return pNext;
+// }
+
+
+
+// ==================== ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ====================
 BinaryTreeNode* CreateBinaryTreeNode(int value)
 {
     BinaryTreeNode* pNode = new BinaryTreeNode();
@@ -135,7 +179,7 @@ void DestroyTree(BinaryTreeNode* pRoot)
     }
 }
 
-// ====================²âÊÔ´úÂë====================
+// ====================ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½====================
 void Test(char* testName, BinaryTreeNode* pNode, BinaryTreeNode* expected)
 {
     if(testName != nullptr)
