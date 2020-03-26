@@ -8,13 +8,13 @@ https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
 *******************************************************************/
 
 //==================================================================
-// ¡¶½£Ö¸Offer¡ª¡ªÃûÆóÃæÊÔ¹Ù¾«½²µäÐÍ±à³ÌÌâ¡·´úÂë
-// ×÷Õß£ººÎº£ÌÎ
+// ï¿½ï¿½ï¿½ï¿½Ö¸Offerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¹Ù¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í±ï¿½ï¿½ï¿½â¡·ï¿½ï¿½ï¿½ï¿½
+// ï¿½ï¿½ï¿½ß£ï¿½ï¿½Îºï¿½ï¿½ï¿½
 //==================================================================
 
-// ÃæÊÔÌâ9£ºÓÃÁ½¸öÕ»ÊµÏÖ¶ÓÁÐ
-// ÌâÄ¿£ºÓÃÁ½¸öÕ»ÊµÏÖÒ»¸ö¶ÓÁÐ¡£¶ÓÁÐµÄÉùÃ÷ÈçÏÂ£¬ÇëÊµÏÖËüµÄÁ½¸öº¯ÊýappendTail
-// ºÍdeleteHead£¬·Ö±ðÍê³ÉÔÚ¶ÓÁÐÎ²²¿²åÈë½áµãºÍÔÚ¶ÓÁÐÍ·²¿É¾³ý½áµãµÄ¹¦ÄÜ¡£
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½9ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ»Êµï¿½Ö¶ï¿½ï¿½ï¿½
+// ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ»Êµï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½appendTail
+// ï¿½ï¿½deleteHeadï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½Î²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½Í·ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½Ä¹ï¿½ï¿½Ü¡ï¿½
 
 #pragma once
 #include <stack>
@@ -28,10 +28,10 @@ public:
     CQueue(void);
     ~CQueue(void);
     
-    // ÔÚ¶ÓÁÐÄ©Î²Ìí¼ÓÒ»¸ö½áµã
+    // ï¿½Ú¶ï¿½ï¿½ï¿½Ä©Î²ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½
     void appendTail(const T& node);
 
-    // É¾³ý¶ÓÁÐµÄÍ·½áµã
+    // É¾ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Í·ï¿½ï¿½ï¿½
     T deleteHead();
 
 private:
@@ -52,20 +52,40 @@ template<typename T> void CQueue<T>::appendTail(const T& element)
     stack1.push(element);
 } 
 
+// template<typename T> T CQueue<T>::deleteHead()
+// {
+//     if(stack2.size()<= 0)
+//     {
+//         while(stack1.size()>0)
+//         {
+//             T& data = stack1.top();
+//             stack1.pop();
+//             stack2.push(data);
+//         }
+//     }
+
+//     if(stack2.size() == 0)
+//         throw new exception("queue is empty");
+
+//     T head = stack2.top();
+//     stack2.pop();
+
+//     return head;
+// }
+
 template<typename T> T CQueue<T>::deleteHead()
 {
-    if(stack2.size()<= 0)
-    {
-        while(stack1.size()>0)
-        {
+    if(stack2.size() <= 0) {
+        while(stack1.size() >0) {
             T& data = stack1.top();
             stack1.pop();
             stack2.push(data);
         }
     }
 
-    if(stack2.size() == 0)
+    if(stack2.size() <= 0) {
         throw new exception("queue is empty");
+    }
 
     T head = stack2.top();
     stack2.pop();
