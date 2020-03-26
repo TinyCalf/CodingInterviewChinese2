@@ -1,11 +1,11 @@
 /*******************************************************************
-Copyright(c) 2016, Harry He
-All rights reserved.
+  Copyright(c) 2016, Harry He
+  All rights reserved.
 
-Distributed under the BSD license.
-(See accompanying file LICENSE.txt at
+  Distributed under the BSD license.
+  (See accompanying file LICENSE.txt at
 https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
-*******************************************************************/
+ *******************************************************************/
 
 //==================================================================
 // 《剑指Offer——名企面试官精讲典型编程题》代码
@@ -18,55 +18,99 @@ https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
 // {3, 4, 5, 1, 2}为{1, 2, 3, 4, 5}的一个旋转，该数组的最小值为1。
 
 #include <cstdio>
-#include <exception>
+#include <iostream>
+using namespace std;
 
-int MinInOrder(int* numbers, int index1, int index2);
+//int MinInOrder(int* numbers, int index1, int index2);
 
-int Min(int* numbers, int length)
-{
-    if(numbers == nullptr || length <= 0)
-        throw new std::exception("Invalid parameters");
- 
-    int index1 = 0;
-    int index2 = length - 1;
-    int indexMid = index1;
-    while(numbers[index1] >= numbers[index2])
-    {
-        // 如果index1和index2指向相邻的两个数，
-        // 则index1指向第一个递增子数组的最后一个数字，
-        // index2指向第二个子数组的第一个数字，也就是数组中的最小数字
-        if(index2 - index1 == 1)
-        {
-            indexMid = index2;
-            break;
-        }
- 
-        // 如果下标为index1、index2和indexMid指向的三个数字相等，
-        // 则只能顺序查找
-        indexMid = (index1 + index2) / 2;
-        if(numbers[index1] == numbers[index2] && numbers[indexMid] == numbers[index1])
-            return MinInOrder(numbers, index1, index2);
+//int Min(int* numbers, int length)
+//{
+//    if(numbers == nullptr || length <= 0)
+//        return 0;
+//
+//    int index1 = 0;
+//    int index2 = length - 1;
+//    int indexMid = index1;
+//    while(numbers[index1] >= numbers[index2])
+//    {
+//        // 如果index1和index2指向相邻的两个数，
+//        // 则index1指向第一个递增子数组的最后一个数字，
+//        // index2指向第二个子数组的第一个数字，也就是数组中的最小数字
+//        if(index2 - index1 == 1)
+//        {
+//            indexMid = index2;
+//            break;
+//        }
+//
+//        // 如果下标为index1、index2和indexMid指向的三个数字相等，
+//        // 则只能顺序查找
+//        indexMid = (index1 + index2) / 2;
+//        if(numbers[index1] == numbers[index2] && numbers[indexMid] == numbers[index1])
+//            return MinInOrder(numbers, index1, index2);
+//
+//        // 缩小查找范围
+//        if(numbers[indexMid] >= numbers[index1])
+//            index1 = indexMid;
+//        else if(numbers[indexMid] <= numbers[index2])
+//            index2 = indexMid;
+//    }
+//
+//    return numbers[indexMid];
+//}
+//
+//int MinInOrder(int* numbers, int index1, int index2)
+//{
+//    int result = numbers[index1];
+//    for(int i = index1 + 1; i <= index2; ++i)
+//    {
+//        if(result > numbers[i])
+//            result = numbers[i];
+//    }
+//
+//    return result;
+//}
+//
 
-        // 缩小查找范围
-        if(numbers[indexMid] >= numbers[index1])
-            index1 = indexMid;
-        else if(numbers[indexMid] <= numbers[index2])
-            index2 = indexMid;
+/**
+ * 靠靠靠
+ */
+int findMin(int* numbers, int length, int leftIndex, int rightIndex) {
+    int minNum;
+    if(leftIndex == rightIndex)  {
+        minNum = numbers[leftIndex];
+        return minNum;
     }
- 
-    return numbers[indexMid];
+
+    int middleIndex = leftIndex + (rightIndex - leftIndex) >> 1;
+
+    if(numbers[leftIndex] == numbers[rightIndex]) {
+        minNum = findMin(numbers, length, leftIndex + 1, middleIndex);
+    }
+    else if(numbers[leftIndex] > numbers[rightIndex]) {
+        int num1 = findMin(numbers, length, leftIndex, middleIndex);
+        int num2 = findMin(numbers, length, middleIndex + 1, rightIndex);
+        if(num1 > num2) {
+            minNum = num2;
+        }else {
+            minNum = num1;
+        }
+    }
+    else {
+        minNum = numbers[leftIndex];
+    }
+
+    return minNum;
 }
 
-int MinInOrder(int* numbers, int index1, int index2)
-{
-    int result = numbers[index1];
-    for(int i = index1 + 1; i <= index2; ++i)
-    {
-        if(result > numbers[i])
-            result = numbers[i];
+int Min(int* numbers, int length) {
+    if(numbers == nullptr || length < 0) {
+        return 0;
     }
-
-    return result;
+    int leftIndex = 0;
+    int rightIndex = length - 1;
+    int res = findMin(numbers, length, leftIndex, rightIndex);
+    cout << res << endl;
+    return res;
 }
 
 // ====================测试代码====================
