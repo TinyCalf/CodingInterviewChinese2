@@ -1,11 +1,11 @@
 /*******************************************************************
-Copyright(c) 2016, Harry He
-All rights reserved.
+  Copyright(c) 2016, Harry He
+  All rights reserved.
 
-Distributed under the BSD license.
-(See accompanying file LICENSE.txt at
+  Distributed under the BSD license.
+  (See accompanying file LICENSE.txt at
 https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
-*******************************************************************/
+ *******************************************************************/
 
 //==================================================================
 // 《剑指Offer——名企面试官精讲典型编程题》代码
@@ -29,66 +29,150 @@ https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
 
 using namespace std;
 
-bool hasPathCore(const char* matrix, int rows, int cols, int row, int col, const char* str, int& pathLength, bool* visited);
+//bool hasPathCore(const char* matrix, int rows, int cols, int row, int col, const char* str, int& pathLength, bool* visited);
+//
+//bool hasPath(const char* matrix, int rows, int cols, const char* str)
+//{
+//    if(matrix == nullptr || rows < 1 || cols < 1 || str == nullptr)
+//        return false;
+//
+//    bool *visited = new bool[rows * cols];
+//    memset(visited, 0, rows * cols);
+//
+//    int pathLength = 0;
+//    for(int row = 0; row < rows; ++row)
+//    {
+//        for(int col = 0; col < cols; ++col)
+//        {
+//            if(hasPathCore(matrix, rows, cols, row, col, str,
+//                pathLength, visited))
+//            {
+//                return true;
+//            }
+//        }
+//    }
+//
+//    delete[] visited;
+//
+//    return false;
+//}
+//
+//bool hasPathCore(const char* matrix, int rows, int cols, int row,
+//    int col, const char* str, int& pathLength, bool* visited)
+//{
+//    if(str[pathLength] == '\0')
+//        return true;
+//
+//    bool hasPath = false;
+//    if(row >= 0 && row < rows && col >= 0 && col < cols
+//        && matrix[row * cols + col] == str[pathLength]
+//        && !visited[row * cols + col])
+//    {
+//        ++pathLength;
+//        visited[row * cols + col] = true;
+//
+//        hasPath = hasPathCore(matrix, rows, cols, row, col - 1,
+//            str, pathLength, visited)
+//            || hasPathCore(matrix, rows, cols, row - 1, col,
+//                str, pathLength, visited)
+//            || hasPathCore(matrix, rows, cols, row, col + 1,
+//                str, pathLength, visited)
+//            || hasPathCore(matrix, rows, cols, row + 1, col,
+//                str, pathLength, visited);
+//
+//        if(!hasPath)
+//        {
+//            --pathLength;
+//            visited[row * cols + col] = false;
+//        }
+//    }
+//
+//    return hasPath;
+//}
 
-bool hasPath(const char* matrix, int rows, int cols, const char* str)
+/**
+*/
+
+/** version 1**/
+bool hasPathCore(const char* matrix, int rows, int cols, int r,
+        int c, const char* str, int& pathLength, bool* visited)
 {
-    if(matrix == nullptr || rows < 1 || cols < 1 || str == nullptr)
+    if(visited[r * cols + c]) {
         return false;
+    }
 
-    bool *visited = new bool[rows * cols];
-    memset(visited, 0, rows * cols);
+    if(str[pathLength] != matrix[r * cols + c]) {
+        return false;
+    }else if(str[pathLength + 1] == '\0') {
+        return true;
+    }
+
+    visited[r * cols + c] = true;
+    pathLength ++;
+
+    //upper
+    if(r > 0) {
+        int upperR = r - 1;
+        int upperC = c;
+        bool hasPath = hasPathCore(matrix, rows, cols, upperR, upperC, str, pathLength, visited);
+        if(hasPath) {
+            return true;
+        }
+    }
+    //lower
+    if(r < rows - 1) {
+        int lowerR = r + 1;
+        int lowerC = c;
+        bool hasPath = hasPathCore(matrix, rows, cols, lowerR, lowerC, str, pathLength, visited);
+        if(hasPath) {
+            return true;
+        }
+    }
+    //left
+    if(c > 0) {
+        int leftR = r;
+        int leftC = c - 1;
+        bool hasPath = hasPathCore(matrix, rows, cols, leftR, leftC, str, pathLength, visited);
+        if(hasPath) {
+            return true;
+        }
+    }
+    //right
+    if(c < cols - 1) {
+        int rightR = r;
+        int rightC = c +1;
+        bool hasPath = hasPathCore(matrix, rows, cols, rightR, rightC, str, pathLength, visited);
+        if(hasPath) {
+            return true;
+        }
+    }
+    pathLength --;
+    visited[r * cols + c] = false;
+    return false;
+}
+
+bool hasPath(const char* matrix, int rows, int cols, const char* str) {
+    if(matrix == nullptr || rows < 1 || cols < 1 || str == nullptr) {
+        return false;
+    }
+
+    bool* visited = new bool[rows * cols];
+    for(int i = 0; i < rows * cols; i++ ) {
+        visited[i] = false;
+    }
 
     int pathLength = 0;
-    for(int row = 0; row < rows; ++row)
-    {
-        for(int col = 0; col < cols; ++col)
-        {
-            if(hasPathCore(matrix, rows, cols, row, col, str,
-                pathLength, visited))
-            {
+
+    for(int c = 0; c < cols; c ++) {
+        for(int r = 0; r < rows; r ++) {
+            if(hasPathCore(matrix, rows, cols, r, c, str, pathLength, visited))    {
                 return true;
             }
         }
     }
-
-    delete[] visited;
-
     return false;
 }
 
-bool hasPathCore(const char* matrix, int rows, int cols, int row,
-    int col, const char* str, int& pathLength, bool* visited)
-{
-    if(str[pathLength] == '\0')
-        return true;
-
-    bool hasPath = false;
-    if(row >= 0 && row < rows && col >= 0 && col < cols
-        && matrix[row * cols + col] == str[pathLength]
-        && !visited[row * cols + col])
-    {
-        ++pathLength;
-        visited[row * cols + col] = true;
-
-        hasPath = hasPathCore(matrix, rows, cols, row, col - 1,
-            str, pathLength, visited)
-            || hasPathCore(matrix, rows, cols, row - 1, col,
-                str, pathLength, visited)
-            || hasPathCore(matrix, rows, cols, row, col + 1,
-                str, pathLength, visited)
-            || hasPathCore(matrix, rows, cols, row + 1, col,
-                str, pathLength, visited);
-
-        if(!hasPath)
-        {
-            --pathLength;
-            visited[row * cols + col] = false;
-        }
-    }
-
-    return hasPath;
-}
 
 // ====================测试代码====================
 void Test(const char* testName, const char* matrix, int rows, int cols, const char* str, bool expected)

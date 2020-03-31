@@ -17,47 +17,65 @@ https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
 // 结点被删除之后，链表如图3.4（b）所示。
 
 #include <cstdio>
-#include "../Utilities/list.h"
+#include "../Utilities/List.h"
 
-void DeleteDuplication(ListNode** pHead)
-{
-    if(pHead == nullptr || *pHead == nullptr)
+//void DeleteDuplication(ListNode** pHead)
+//{
+//    if(pHead == nullptr || *pHead == nullptr)
+//        return;
+//
+//    ListNode* pPreNode = nullptr;
+//    ListNode* pNode = *pHead;
+//    while(pNode != nullptr)
+//    {
+//        ListNode *pNext = pNode->m_pNext;
+//        bool needDelete = false;
+//        if(pNext != nullptr && pNext->m_nValue == pNode->m_nValue)
+//            needDelete = true;
+//
+//        if(!needDelete)
+//        {
+//            pPreNode = pNode;
+//            pNode = pNode->m_pNext;
+//        }
+//        else
+//        {
+//            int value = pNode->m_nValue;
+//            ListNode* pToBeDel = pNode;
+//            while(pToBeDel != nullptr && pToBeDel->m_nValue == value)
+//            {
+//                pNext = pToBeDel->m_pNext;
+//
+//                delete pToBeDel;
+//                pToBeDel = nullptr;
+//
+//                pToBeDel = pNext;
+//            }
+//
+//            if(pPreNode == nullptr)
+//                *pHead = pNext;
+//            else
+//                pPreNode->m_pNext = pNext;
+//            pNode = pNext;
+//        }
+//    }
+//}
+
+void DeleteDuplication(ListNode** pHead) {
+    if(!pHead || !*pHead) {
         return;
+    }
+    ListNode* p = *pHead;
+    while(p->m_pNext != nullptr) {
+        while(p->m_pNext->m_nValue == p->m_nValue) {
+            ListNode* next = p->m_pNext-> m_pNext;
 
-    ListNode* pPreNode = nullptr;
-    ListNode* pNode = *pHead;
-    while(pNode != nullptr)
-    {
-        ListNode *pNext = pNode->m_pNext;
-        bool needDelete = false;
-        if(pNext != nullptr && pNext->m_nValue == pNode->m_nValue)
-            needDelete = true;
+            p->m_pNext->m_pNext = nullptr;
+            delete p->m_pNext;
 
-        if(!needDelete)
-        {
-            pPreNode = pNode;
-            pNode = pNode->m_pNext;
+            p->m_pNext = next; 
         }
-        else
-        {
-            int value = pNode->m_nValue;
-            ListNode* pToBeDel = pNode;
-            while(pToBeDel != nullptr && pToBeDel->m_nValue == value)
-            {
-                pNext = pToBeDel->m_pNext;
-
-                delete pToBeDel;
-                pToBeDel = nullptr;
-
-                pToBeDel = pNext;
-            }
-
-            if(pPreNode == nullptr)
-                *pHead = pNext;
-            else
-                pPreNode->m_pNext = pNext;
-            pNode = pNext;
-        }
+        p = p->m_pNext;
     }
 }
 

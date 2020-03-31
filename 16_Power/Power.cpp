@@ -1,11 +1,11 @@
 /*******************************************************************
-Copyright(c) 2016, Harry He
-All rights reserved.
+  Copyright(c) 2016, Harry He
+  All rights reserved.
 
-Distributed under the BSD license.
-(See accompanying file LICENSE.txt at
+  Distributed under the BSD license.
+  (See accompanying file LICENSE.txt at
 https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
-*******************************************************************/
+ *******************************************************************/
 
 //==================================================================
 // 《剑指Offer——名企面试官精讲典型编程题》代码
@@ -21,56 +21,56 @@ https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
 
 bool g_InvalidInput = false;
 bool equal(double num1, double num2);
-double PowerWithUnsignedExponent(double base, unsigned int exponent);
-
-double Power(double base, int exponent)
-{
-    g_InvalidInput = false;
-
-    if (equal(base, 0.0) && exponent < 0)
-    {
-        g_InvalidInput = true;
-        return 0.0;
-    }
-
-    unsigned int absExponent = (unsigned int) (exponent);
-    if (exponent < 0)
-        absExponent = (unsigned int) (-exponent);
-
-    double result = PowerWithUnsignedExponent(base, absExponent);
-    if (exponent < 0)
-        result = 1.0 / result;
-
-    return result;
-}
-
-/*
-double PowerWithUnsignedExponent(double base, unsigned int exponent)
-{
-    double result = 1.0;
-    
-    for (int i = 1; i <= exponent; ++i)
-        result *= base;
-
-    return result;
-}
-*/
-
-double PowerWithUnsignedExponent(double base, unsigned int exponent)
-{
-    if (exponent == 0)
-        return 1;
-    if (exponent == 1)
-        return base;
-
-    double result = PowerWithUnsignedExponent(base, exponent >> 1);
-    result *= result;
-    if ((exponent & 0x1) == 1)
-        result *= base;
-
-    return result;
-}
-
+//double PowerWithUnsignedExponent(double base, unsigned int exponent);
+//
+//double Power(double base, int exponent)
+//{
+//    g_InvalidInput = false;
+//
+//    if (equal(base, 0.0) && exponent < 0)
+//    {
+//        g_InvalidInput = true;
+//        return 0.0;
+//    }
+//
+//    unsigned int absExponent = (unsigned int) (exponent);
+//    if (exponent < 0)
+//        absExponent = (unsigned int) (-exponent);
+//
+//    double result = PowerWithUnsignedExponent(base, absExponent);
+//    if (exponent < 0)
+//        result = 1.0 / result;
+//
+//    return result;
+//}
+//
+///*
+//double PowerWithUnsignedExponent(double base, unsigned int exponent)
+//{
+//    double result = 1.0;
+//
+//    for (int i = 1; i <= exponent; ++i)
+//        result *= base;
+//
+//    return result;
+//}
+//*/
+//
+//double PowerWithUnsignedExponent(double base, unsigned int exponent)
+//{
+//    if (exponent == 0)
+//        return 1;
+//    if (exponent == 1)
+//        return base;
+//
+//    double result = PowerWithUnsignedExponent(base, exponent >> 1);
+//    result *= result;
+//    if ((exponent & 0x1) == 1)
+//        result *= base;
+//
+//    return result;
+//}
+//
 bool equal(double num1, double num2)
 {
     if ((num1 - num2 > -0.0000001) && (num1 - num2 < 0.0000001))
@@ -78,11 +78,67 @@ bool equal(double num1, double num2)
     else
         return false;
 }
+//
+double PowerWithUnsignedBaseAndExponent(double base, unsigned int exponent) {
+    if(exponent == 0) {
+        return 1;
+    }
+    if(exponent == 1) {
+        return base;
+    }
+    double result = PowerWithUnsignedBaseAndExponent(base, exponent >> 1);
+    result *= result;
+    if(exponent & 0x1) {
+        result *= base;
+    }
+    return result;
+}
+double Power(double base, int exponent) {
+
+    g_InvalidInput = false;
+    if(base == 0.0 && exponent <= 0) {
+        g_InvalidInput = true; 
+        return 0.0;
+    } 
+
+    if(base == 0.0) {
+        return 0;
+    }
+
+    double absBase;
+    if(base < 0) {
+        absBase =  -base; 
+    } else {
+        absBase =  base; 
+    } 
+
+    unsigned int absExponent;
+    if(exponent < 0) {
+        absExponent = (unsigned int) -exponent;
+    } else {
+        absExponent = (unsigned int) exponent;
+    }
+
+    double result = PowerWithUnsignedBaseAndExponent(absBase, absExponent);
+
+    if(exponent < 0 && result != 0.0) {
+        result = 1 / result; 
+    }
+
+    if(base < 0 && exponent & 0x1) {
+        result = -result;
+    }
+    return result;
+    
+}
+
+
 
 // ====================测试代码====================
 void Test(const char* testName, double base, int exponent, double expectedResult, bool expectedFlag)
 {
     double result = Power(base, exponent);
+    std::cout << result << std::endl;
     if (equal(result, expectedResult) && g_InvalidInput == expectedFlag)
         std::cout << testName << " passed" << std::endl;
     else
