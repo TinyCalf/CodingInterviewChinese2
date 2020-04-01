@@ -40,6 +40,23 @@ ListNode* ReverseList(ListNode* pHead)
     return pReversedHead;
 }
 
+ListNode* ReverseList(ListNode* pHead) {
+    if(pHead == nullptr) {
+        return nullptr;
+    }
+    
+    ListNode* pBehind = nullptr;
+    ListNode* pMid = pHead;
+    ListNode* pAhead = pHead -> m_pNext;
+    while(pMid != nullptr) {
+        pMid -> pNext = pBehind;
+        pBehind = pMid;
+        pMid = pAhead;
+        pAhead = pAhead -> m_pNext;
+    }
+    return pBehind;
+}
+
 // ====================²âÊÔ´úÂë====================
 ListNode* Test(ListNode* pHead)
 {

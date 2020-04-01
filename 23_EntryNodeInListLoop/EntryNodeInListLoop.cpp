@@ -17,62 +17,132 @@ https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
 // 环的入口结点是结点3。
 
 #include <cstdio>
-#include "../Utilities/list.h"
+#include "../Utilities/List.h"
 
-ListNode* MeetingNode(ListNode* pHead)
-{
-    if(pHead == nullptr)
+//ListNode* MeetingNode(ListNode* pHead)
+//{
+//    if(pHead == nullptr)
+//        return nullptr;
+//
+//    ListNode* pSlow = pHead->m_pNext;
+//    if(pSlow == nullptr)
+//        return nullptr;
+//
+//    ListNode* pFast = pSlow->m_pNext;
+//    while(pFast != nullptr && pSlow != nullptr)
+//    {
+//        if(pFast == pSlow)
+//            return pFast;
+//
+//        pSlow = pSlow->m_pNext;
+//
+//        pFast = pFast->m_pNext;
+//        if(pFast != nullptr)
+//            pFast = pFast->m_pNext;
+//    }
+//
+//    return nullptr;
+//}
+//
+//ListNode* EntryNodeOfLoop(ListNode* pHead)
+//{
+//    ListNode* meetingNode = MeetingNode(pHead);
+//    if(meetingNode == nullptr)
+//        return nullptr;
+//
+//    // 得到环中结点的数目
+//    int nodesInLoop = 1;
+//    ListNode* pNode1 = meetingNode;
+//    while(pNode1->m_pNext != meetingNode)
+//    {
+//        pNode1 = pNode1->m_pNext;
+//        ++nodesInLoop;
+//    }
+//
+//    // 先移动pNode1，次数为环中结点的数目
+//    pNode1 = pHead;
+//    for(int i = 0; i < nodesInLoop; ++i)
+//        pNode1 = pNode1->m_pNext;
+//
+//    // 再移动pNode1和pNode2
+//    ListNode* pNode2 = pHead;
+//    while(pNode1 != pNode2)
+//    {
+//        pNode1 = pNode1->m_pNext;
+//        pNode2 = pNode2->m_pNext;
+//    }
+//
+//    return pNode1;
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ListNode* EntryNodeOfLoop(ListNode* pHead) {
+    if(pHead == nullptr) {
         return nullptr;
-
-    ListNode* pSlow = pHead->m_pNext;
-    if(pSlow == nullptr)
-        return nullptr;
-
-    ListNode* pFast = pSlow->m_pNext;
-    while(pFast != nullptr && pSlow != nullptr)
-    {
-        if(pFast == pSlow)
-            return pFast;
-
-        pSlow = pSlow->m_pNext;
-
-        pFast = pFast->m_pNext;
-        if(pFast != nullptr)
-            pFast = pFast->m_pNext;
     }
 
-    return nullptr;
-}
+    ListNode* pOneStep = pHead;
+    ListNode* pTwoStep = pHead;
+    while(
+        pOneStep != nullptr && 
+        pTwoStep != nullptr && 
+        pOneStep != pTwoStep -> m_pNext
+    ) {
+        pOneStep = pOneStep->m_pNext;
+        pTwoStep = pTwoStep->m_pNext;
+        if(pTwoStep != nullptr) 
+            pTwoStep = pTwoStep->m_pNext;
+    } 
 
-ListNode* EntryNodeOfLoop(ListNode* pHead)
-{
-    ListNode* meetingNode = MeetingNode(pHead);
-    if(meetingNode == nullptr)
+    if(pOneStep == nullptr || pTwoStep == nullptr) {
         return nullptr;
-
-    // 得到环中结点的数目
-    int nodesInLoop = 1;
-    ListNode* pNode1 = meetingNode;
-    while(pNode1->m_pNext != meetingNode)
-    {
-        pNode1 = pNode1->m_pNext;
-        ++nodesInLoop;
     }
-
-    // 先移动pNode1，次数为环中结点的数目
-    pNode1 = pHead;
-    for(int i = 0; i < nodesInLoop; ++i)
-        pNode1 = pNode1->m_pNext;
-
-    // 再移动pNode1和pNode2
-    ListNode* pNode2 = pHead;
-    while(pNode1 != pNode2)
-    {
-        pNode1 = pNode1->m_pNext;
-        pNode2 = pNode2->m_pNext;
+    int loopNodeCount = 1;
+    while(pTwoStep != pOneStep) {
+        pOneStep = pOneStep->m_pNext;
+        loopNodeCount ++;
     }
-
-    return pNode1;
+    pOneStep = pHead;
+    pTwoStep = pHead;
+    for(int i=0; i< loopNodeCount - 1; i++) {
+       pTwoStep = pTwoStep->m_pNext; 
+    }
+    while(pOneStep != pTwoStep) {
+        pOneStep =  pOneStep -> m_pNext;
+        pTwoStep = pTwoStep -> m_pNext;
+    }
+    return pOneStep;
 }
 
 // ==================== Test Code ====================
