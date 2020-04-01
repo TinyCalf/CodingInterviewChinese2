@@ -1,11 +1,11 @@
 /*******************************************************************
-Copyright(c) 2016, Harry He
-All rights reserved.
+  Copyright(c) 2016, Harry He
+  All rights reserved.
 
-Distributed under the BSD license.
-(See accompanying file LICENSE.txt at
+  Distributed under the BSD license.
+  (See accompanying file LICENSE.txt at
 https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
-*******************************************************************/
+ *******************************************************************/
 
 //==================================================================
 // 《剑指Offer——名企面试官精讲典型编程题》代码
@@ -17,6 +17,7 @@ https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
 // 奇数位于数组的前半部分，所有偶数位于数组的后半部分。
 
 #include <cstdio>
+#include <iostream>
 
 void Reorder(int *pData, unsigned int length, bool (*func)(int));
 bool isEven(int n);
@@ -50,42 +51,78 @@ void ReorderOddEven_1(int *pData, unsigned int length)
 }
 
 // ====================方法二====================
-void ReorderOddEven_2(int *pData, unsigned int length)
-{
-    Reorder(pData, length, isEven);
+//void ReorderOddEven_2(int *pData, unsigned int length)
+//{
+//    Reorder(pData, length, isEven);
+//}
+//
+//void Reorder(int *pData, unsigned int length, bool (*func)(int))
+//{
+//    if(pData == nullptr || length == 0)
+//        return;
+//
+//    int *pBegin = pData;
+//    int *pEnd = pData + length - 1;
+//
+//    while(pBegin < pEnd)
+//    {
+//        // 向后移动pBegin
+//        while(pBegin < pEnd && !func(*pBegin))
+//            pBegin ++;
+//
+//        // 向前移动pEnd
+//        while(pBegin < pEnd && func(*pEnd))
+//            pEnd --;
+//
+//        if(pBegin < pEnd)
+//        {
+//            int temp = *pBegin;
+//            *pBegin = *pEnd;
+//            *pEnd = temp;
+//        }
+//    }
+//}
+//
+//bool isEven(int n)
+//{
+//    return (n & 1) == 0;
+//}
+
+bool isOdd(int num) {
+    return (num & 0x1) == 0;
 }
 
-void Reorder(int *pData, unsigned int length, bool (*func)(int))
-{
+void ReorderOddEven_2(int* pData, unsigned int length) {
     if(pData == nullptr || length == 0)
         return;
 
-    int *pBegin = pData;
-    int *pEnd = pData + length - 1;
+    int* pBegin = pData;
+    int* pEnd = pData + length - 1;
 
-    while(pBegin < pEnd) 
-    {
-        // 向后移动pBegin
-        while(pBegin < pEnd && !func(*pBegin))
-            pBegin ++;
-
-        // 向前移动pEnd
-        while(pBegin < pEnd && func(*pEnd))
-            pEnd --;
-
-        if(pBegin < pEnd)
-        {
-            int temp = *pBegin;
+    while(pEnd > pBegin) {
+        std::cout<< *pBegin << " " << *pEnd << std::endl;
+        std::cout<< isOdd(*pBegin) << " " << isOdd(*pEnd) << std::endl;
+        if(isOdd(*pBegin) && !isOdd(*pEnd)) {
+            std::cout<< *pBegin << " " << *pEnd << std::endl;
+            int tmp = *pBegin;
             *pBegin = *pEnd;
-            *pEnd = temp;
+            *pEnd = tmp;
+            pBegin ++;
+            pEnd --;
+            continue;
+        }
+        if(!isOdd(*pBegin)) {
+            pBegin ++;
+            continue;
+        }
+        if(isOdd(*pEnd)) {
+            pEnd --;
+            continue;
         }
     }
 }
 
-bool isEven(int n)
-{
-    return (n & 1) == 0;
-}
+
 
 // ====================测试代码====================
 void PrintArray(int numbers[], int length)
