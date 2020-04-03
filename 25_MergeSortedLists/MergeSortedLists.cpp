@@ -1,11 +1,11 @@
 /*******************************************************************
-Copyright(c) 2016, Harry He
-All rights reserved.
+  Copyright(c) 2016, Harry He
+  All rights reserved.
 
-Distributed under the BSD license.
-(See accompanying file LICENSE.txt at
+  Distributed under the BSD license.
+  (See accompanying file LICENSE.txt at
 https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
-*******************************************************************/
+ *******************************************************************/
 
 //==================================================================
 // 《剑指Offer——名企面试官精讲典型编程题》代码
@@ -20,27 +20,58 @@ https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
 #include <cstdio>
 #include "..\Utilities\List.h"
 
-ListNode* Merge(ListNode* pHead1, ListNode* pHead2)
-{
-    if(pHead1 == nullptr)
+//ListNode* Merge(ListNode* pHead1, ListNode* pHead2)
+//{
+//    if(pHead1 == nullptr)
+//        return pHead2;
+//    else if(pHead2 == nullptr)
+//        return pHead1;
+//
+//    ListNode* pMergedHead = nullptr;
+//
+//    if(pHead1->m_nValue < pHead2->m_nValue)
+//    {
+//        pMergedHead = pHead1;
+//        pMergedHead->m_pNext = Merge(pHead1->m_pNext, pHead2);
+//    }
+//    else
+//    {
+//        pMergedHead = pHead2;
+//        pMergedHead->m_pNext = Merge(pHead1, pHead2->m_pNext);
+//    }
+//
+//    return pMergedHead;
+//}
+
+
+
+
+
+
+
+
+
+
+ListNode* Merge(ListNode* pHead1, ListNode* pHead2) {
+    if(pHead1 == nullptr)  {
         return pHead2;
-    else if(pHead2 == nullptr)
+    }else if(pHead2 == nullptr) {
         return pHead1;
-
-    ListNode* pMergedHead = nullptr;
-
-    if(pHead1->m_nValue < pHead2->m_nValue)
-    {
-        pMergedHead = pHead1;
-        pMergedHead->m_pNext = Merge(pHead1->m_pNext, pHead2);
     }
-    else
-    {
-        pMergedHead = pHead2;
-        pMergedHead->m_pNext = Merge(pHead1, pHead2->m_pNext);
-    }
+    ListNode* p1 = pHead1;
+    ListNode* p2 = pHead2;
 
-    return pMergedHead;
+    ListNode* pNewHead = nullptr;
+
+    if(p1->m_nValue < p2->m_nValue) {
+        pNewHead = p1;
+        pNewHead -> n_pNext = Merge(p1->n_pNext, p2);
+    }
+    else {
+        pNewHead = p2; 
+        pNewHead -> n_pNext = Merge(p1, p2->n_pNext);
+    }
+    return pNewHead;
 }
 
 // ====================测试代码====================
@@ -58,7 +89,7 @@ ListNode* Test(char* testName, ListNode* pHead1, ListNode* pHead2)
     printf("The merged list is:\n");
     ListNode* pMergedHead = Merge(pHead1, pHead2);
     PrintList(pMergedHead);
-    
+
     printf("\n\n");
 
     return pMergedHead;
