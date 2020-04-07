@@ -1,4 +1,4 @@
-/*******************************************************************
+ /*******************************************************************
 Copyright(c) 2016, Harry He
 All rights reserved.
 
@@ -31,59 +31,100 @@ ComplexListNode* Clone(ComplexListNode* pHead)
     return ReconnectNodes(pHead);
 }
 
-void CloneNodes(ComplexListNode* pHead)
-{
+// void CloneNodes(ComplexListNode* pHead)
+// {
+//     ComplexListNode* pNode = pHead;
+//     while(pNode != nullptr)
+//     {
+//         ComplexListNode* pCloned = new ComplexListNode();
+//         pCloned->m_nValue = pNode->m_nValue;
+//         pCloned->m_pNext = pNode->m_pNext;
+//         pCloned->m_pSibling = nullptr;
+ 
+//         pNode->m_pNext = pCloned;
+ 
+//         pNode = pCloned->m_pNext;
+//     }
+// }
+
+void CloneNodes(ComplexListNode* pHead) {
     ComplexListNode* pNode = pHead;
-    while(pNode != nullptr)
-    {
+
+    while(pNode != nullptr) {
         ComplexListNode* pCloned = new ComplexListNode();
         pCloned->m_nValue = pNode->m_nValue;
-        pCloned->m_pNext = pNode->m_pNext;
+        pCloned->m_pNext = pNode-> m_pNext;
         pCloned->m_pSibling = nullptr;
- 
+
         pNode->m_pNext = pCloned;
- 
+
         pNode = pCloned->m_pNext;
     }
 }
 
-void ConnectSiblingNodes(ComplexListNode* pHead)
-{
+// void ConnectSiblingNodes(ComplexListNode* pHead)
+// {
+//     ComplexListNode* pNode = pHead;
+//     while(pNode != nullptr)
+//     {
+//         ComplexListNode* pCloned = pNode->m_pNext;
+//         if(pNode->m_pSibling != nullptr)
+//         {
+//             pCloned->m_pSibling = pNode->m_pSibling->m_pNext;
+//         }
+ 
+//         pNode = pCloned->m_pNext;
+//     }
+// }
+
+void ConnectSiblingNodes(ComplexListNode* pHead) {
     ComplexListNode* pNode = pHead;
-    while(pNode != nullptr)
-    {
+    
+    while(pNode != nullptr) {
         ComplexListNode* pCloned = pNode->m_pNext;
-        if(pNode->m_pSibling != nullptr)
-        {
+        if(pNode->m_pSibling != nullptr) {
             pCloned->m_pSibling = pNode->m_pSibling->m_pNext;
-        }
- 
-        pNode = pCloned->m_pNext;
+        }     
+        pNode = pCloned -> m_pNext;
     }
 }
 
-ComplexListNode* ReconnectNodes(ComplexListNode* pHead)
-{
+// ComplexListNode* ReconnectNodes(ComplexListNode* pHead)
+// {
+//     ComplexListNode* pNode = pHead;
+//     ComplexListNode* pClonedHead = nullptr;
+//     ComplexListNode* pClonedNode = nullptr;
+ 
+//     if(pNode != nullptr)
+//     {
+//         pClonedHead = pClonedNode = pNode->m_pNext;
+//         pNode->m_pNext = pClonedNode->m_pNext;
+//         pNode = pNode->m_pNext;
+//     }
+
+//     while(pNode != nullptr)
+//     {
+//         pClonedNode->m_pNext = pNode->m_pNext;
+//         pClonedNode = pClonedNode->m_pNext;
+ 
+//         pNode->m_pNext = pClonedNode->m_pNext;
+//         pNode = pNode->m_pNext;
+//     }
+ 
+//     return pClonedHead;
+// }
+
+ComplexListNode* ReconnectNodes(ComplexListNode* pHead) {
     ComplexListNode* pNode = pHead;
-    ComplexListNode* pClonedHead = nullptr;
-    ComplexListNode* pClonedNode = nullptr;
- 
-    if(pNode != nullptr)
-    {
-        pClonedHead = pClonedNode = pNode->m_pNext;
-        pNode->m_pNext = pClonedNode->m_pNext;
-        pNode = pNode->m_pNext;
+    ComplexListNode* pClonedHead = pHead->m_pNext;
+
+    while(pNode != nullptr) {
+        ComplexListNode* pCloned = pNode-> m_pNext;
+        ComplexListNode* pNext = pNode-> m_pNext;
+        pCloned->m_pNext = pNext != nullptr ? pNext->m_pNext : nullptr;
+        pNode->m_pNext = pNext;
+        pNode = pNext;
     }
- 
-    while(pNode != nullptr)
-    {
-        pClonedNode->m_pNext = pNode->m_pNext;
-        pClonedNode = pClonedNode->m_pNext;
- 
-        pNode->m_pNext = pClonedNode->m_pNext;
-        pNode = pNode->m_pNext;
-    }
- 
     return pClonedHead;
 }
 

@@ -19,41 +19,75 @@ https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
 #include <cstdio>
 
 // BST：Binary Search Tree，二叉搜索树
-bool VerifySquenceOfBST(int sequence[], int length)
-{
-    if(sequence == nullptr || length <= 0)
-        return false;
+// bool VerifySquenceOfBST(int sequence[], int length)
+// {
+//     if(sequence == nullptr || length <= 0)
+//         return false;
 
-    int root = sequence[length - 1];
+//     int root = sequence[length - 1];
 
-    // 在二叉搜索树中左子树的结点小于根结点
-    int i = 0;
-    for(; i < length - 1; ++ i)
-    {
-        if(sequence[i] > root)
-            break;
-    }
+//     // 在二叉搜索树中左子树的结点小于根结点
+//     int i = 0;
+//     for(; i < length - 1; ++ i)
+//     {
+//         if(sequence[i] > root)
+//             break;
+//     }
 
-    // 在二叉搜索树中右子树的结点大于根结点
-    int j = i;
-    for(; j < length - 1; ++ j)
-    {
-        if(sequence[j] < root)
-            return false;
-    }
+//     // 在二叉搜索树中右子树的结点大于根结点
+//     int j = i;
+//     for(; j < length - 1; ++ j)
+//     {
+//         if(sequence[j] < root)
+//             return false;
+//     }
 
-    // 判断左子树是不是二叉搜索树
-    bool left = true;
-    if(i > 0)
-        left = VerifySquenceOfBST(sequence, i);
+//     // 判断左子树是不是二叉搜索树
+//     bool left = true;
+//     if(i > 0)
+//         left = VerifySquenceOfBST(sequence, i);
 
-    // 判断右子树是不是二叉搜索树
-    bool right = true;
-    if(i < length - 1)
-        right = VerifySquenceOfBST(sequence + i, length - i - 1);
+//     // 判断右子树是不是二叉搜索树
+//     bool right = true;
+//     if(i < length - 1)
+//         right = VerifySquenceOfBST(sequence + i, length - i - 1);
 
-    return (left && right);
+//     return (left && right);
+// }
+
+bool VerifySquenceOfBST(int sequence[], int length) {
+    
 }
+
+bool VerifyCore(int sequence[], int startIndex, int endIndex) {
+    if(startIndex >= endIndex) {
+        return true;
+    }
+    int i = startIndex;
+
+    for(; i < endIndex; i++) {
+        if(sequence[i] > sequence[endIndex])
+            break;   
+    }
+
+    int j = i;
+
+    for(;j < endIndex; j++) {
+        if(sequence[j] < sequence[endIndex])
+            return false;  
+    }
+
+    bool left = true;
+    if(i > startIndex) 
+        left = VerifyCore(sequence, startIndex, i - 1);
+    
+    bool right = true;
+    if(i < endIndex - 1)
+        right = VerifyCore(sequence, i, endIndex - 1);
+
+    return left && right;
+}
+
 
 // ====================测试代码====================
 void Test(const char* testName, int sequence[], int length, bool expected)
