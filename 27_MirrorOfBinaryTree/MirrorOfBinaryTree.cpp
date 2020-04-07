@@ -1,11 +1,11 @@
 /*******************************************************************
-Copyright(c) 2016, Harry He
-All rights reserved.
+  Copyright(c) 2016, Harry He
+  All rights reserved.
 
-Distributed under the BSD license.
-(See accompanying file LICENSE.txt at
+  Distributed under the BSD license.
+  (See accompanying file LICENSE.txt at
 https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
-*******************************************************************/
+ *******************************************************************/
 
 //==================================================================
 // 《剑指Offer——名企面试官精讲典型编程题》代码
@@ -19,20 +19,54 @@ https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
 #include "..\Utilities\BinaryTree.h"
 #include <stack>
 
-void MirrorRecursively(BinaryTreeNode *pNode)
-{
-    if((pNode == nullptr) || (pNode->m_pLeft == nullptr && pNode->m_pRight))
+//void MirrorRecursively(BinaryTreeNode *pNode)
+//{
+//    if((pNode == nullptr) || (pNode->m_pLeft == nullptr && pNode->m_pRight))
+//        return;
+//
+//    BinaryTreeNode *pTemp = pNode->m_pLeft;
+//    pNode->m_pLeft = pNode->m_pRight;
+//    pNode->m_pRight = pTemp;
+//
+//    if(pNode->m_pLeft)
+//        MirrorRecursively(pNode->m_pLeft);
+//
+//    if(pNode->m_pRight)
+//        MirrorRecursively(pNode->m_pRight);
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void MirrorRecursively(BinaryTreeNode *pNode) {
+    if(pNode == nullptr)
         return;
 
-    BinaryTreeNode *pTemp = pNode->m_pLeft;
-    pNode->m_pLeft = pNode->m_pRight;
-    pNode->m_pRight = pTemp;
-    
-    if(pNode->m_pLeft)
-        MirrorRecursively(pNode->m_pLeft);  
+    BinaryTreeNode pLeft = pNode -> m_pLeft;
+    BinaryTreeNode pRight = pNode -> m_pRight;
 
-    if(pNode->m_pRight)
-        MirrorRecursively(pNode->m_pRight); 
+    pNode->m_pRight = pLeft;
+    pNode->m_pLeft = pRight;
+
+    MirrorRecursively(pLeft);
+    MirrorRecursively(pRight);
 }
 
 void MirrorIteratively(BinaryTreeNode* pRoot)
@@ -95,8 +129,8 @@ void Test1()
 
 // 测试二叉树：出叶子结点之外，左右的结点都有且只有一个左子结点
 //            8
-//          7   
-//        6 
+//          7
+//        6
 //      5
 //    4
 void Test2()
@@ -128,8 +162,8 @@ void Test2()
 
 // 测试二叉树：出叶子结点之外，左右的结点都有且只有一个右子结点
 //            8
-//             7   
-//              6 
+//             7
+//              6
 //               5
 //                4
 void Test3()
