@@ -8,17 +8,20 @@ https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
 *******************************************************************/
 
 //==================================================================
-// 《剑指Offer——名企面试官精讲典型编程题》代码
-// 作者：何海涛
+// 锟斤拷锟斤拷指Offer锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟皆官撅拷锟斤拷锟斤拷锟酵憋拷锟斤拷狻凤拷锟斤拷锟?
+// 锟斤拷锟竭ｏ拷锟轿猴拷锟斤拷
 //==================================================================
 
-// 面试题39：数组中出现次数超过一半的数字
-// 题目：数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。例
-// 如输入一个长度为9的数组{1, 2, 3, 2, 2, 2, 5, 4, 2}。由于数字2在数组中
-// 出现了5次，超过数组长度的一半，因此输出2。
+// 锟斤拷锟斤拷锟斤拷39锟斤拷锟斤拷锟斤拷锟叫筹拷锟街达拷锟斤拷锟斤拷锟斤拷一锟斤拷锟斤拷锟斤拷锟?
+// 锟斤拷目锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷一锟斤拷锟斤拷锟街筹拷锟街的达拷锟斤拷锟斤拷锟斤拷锟斤拷锟介长锟饺碉拷一锟诫，锟斤拷锟揭筹拷锟斤拷锟斤拷锟斤拷帧锟斤拷锟?
+// 锟斤拷锟斤拷锟斤拷一锟斤拷锟斤拷锟斤拷为9锟斤拷锟斤拷锟斤拷{1, 2, 3, 2, 2, 2, 5, 4, 2}锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷2锟斤拷锟斤拷锟斤拷锟斤拷
+// 锟斤拷锟斤拷锟斤拷5锟轿ｏ拷锟斤拷锟斤拷锟斤拷锟介长锟饺碉拷一锟诫，锟斤拷锟斤拷锟斤拷2锟斤拷
 
 #include <cstdio>
 #include "..\Utilities\Array.h"
+#include <iostream>
+
+using namespace std;
 
 bool g_bInputInvalid = false;
 
@@ -50,38 +53,96 @@ bool CheckMoreThanHalf(int* numbers, int length, int number)
     return isMoreThanHalf;
 }
 
-// ====================方法1====================
-int MoreThanHalfNum_Solution1(int* numbers, int length)
-{
-    if(CheckInvalidArray(numbers, length))
-        return 0;
- 
-    int middle = length >> 1;
-    int start = 0;
-    int end = length - 1;
-    int index = Partition(numbers, length, start, end);
-    while(index != middle)
-    {
-        if(index > middle)
-        {
-            end = index - 1;
-            index = Partition(numbers, length, start, end);
-        }
-        else
-        {
-            start = index + 1;
-            index = Partition(numbers, length, start, end);
+// ====================锟斤拷锟斤拷1====================
+int Part(int* numbers, int length, int start, int end) {
+	cout << start << ' ' << end << endl;
+    if(start == end)
+        return numbers[start];
+	if (start > end)
+		return 0;
+
+    int chosenIndex = start;
+
+    for(int i = start + 1; i <= end; i++) {
+        if(numbers[i] < numbers[chosenIndex]) {
+            int tmp = numbers[i];
+            for(int j = i - 1; j>=chosenIndex; j --) {
+                numbers[j + 1] = numbers[j];
+            }
+            numbers[chosenIndex] = tmp;
+            chosenIndex ++;
         }
     }
- 
-    int result = numbers[middle];
-    if(!CheckMoreThanHalf(numbers, length, result))
-        result = 0;
 
-    return result;
+    if(chosenIndex == length >> 1) 
+        return numbers[chosenIndex];
+	else if(chosenIndex >  length >> 1)
+        return Part(numbers, length, start, chosenIndex - 1);
+    else 
+        return Part(numbers, length, chosenIndex + 1, end);
 }
 
-// ====================方法2====================
+
+int MoreThanHalfNum_Solution1(int* numbers, int length) {
+    return Part(numbers, length, 0 , length -1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// int MoreThanHalfNum_Solution1(int* numbers, int length)
+// {
+//     if(CheckInvalidArray(numbers, length))
+//         return 0;
+ 
+//     int middle = length >> 1;
+//     int start = 0;
+//     int end = length - 1;
+//     int index = Partition(numbers, length, start, end);
+//     while(index != middle)
+//     {
+//         if(index > middle)
+//         {
+//             end = index - 1;
+//             index = Partition(numbers, length, start, end);
+//         }
+//         else
+//         {
+//             start = index + 1;
+//             index = Partition(numbers, length, start, end);
+//         }
+//     }
+ 
+//     int result = numbers[middle];
+//     if(!CheckMoreThanHalf(numbers, length, result))
+//         result = 0;
+
+//     return result;
+// }
+
+// ====================锟斤拷锟斤拷2====================
 int MoreThanHalfNum_Solution2(int* numbers, int length)
 {
     if(CheckInvalidArray(numbers, length))
@@ -108,7 +169,7 @@ int MoreThanHalfNum_Solution2(int* numbers, int length)
     return result;
 }
 
-// ====================测试代码====================
+// ====================锟斤拷锟皆达拷锟斤拷====================
 void Test(char* testName, int* numbers, int length, int expectedValue, bool expectedFlag)
 {
     if(testName != nullptr)
@@ -135,42 +196,42 @@ void Test(char* testName, int* numbers, int length, int expectedValue, bool expe
     delete[] copy;
 }
 
-// 存在出现次数超过数组长度一半的数字
+// 锟斤拷锟节筹拷锟街达拷锟斤拷锟斤拷锟斤拷锟斤拷锟介长锟斤拷一锟斤拷锟斤拷锟斤拷锟?
 void Test1()
 {
     int numbers[] = {1, 2, 3, 2, 2, 2, 5, 4, 2};
     Test("Test1", numbers, sizeof(numbers) / sizeof(int), 2, false);
 }
 
-// 不存在出现次数超过数组长度一半的数字
+// 锟斤拷锟斤拷锟节筹拷锟街达拷锟斤拷锟斤拷锟斤拷锟斤拷锟介长锟斤拷一锟斤拷锟斤拷锟斤拷锟?
 void Test2()
 {
     int numbers[] = {1, 2, 3, 2, 4, 2, 5, 2, 3};
     Test("Test2", numbers, sizeof(numbers) / sizeof(int), 0, true);
 }
 
-// 出现次数超过数组长度一半的数字都出现在数组的前半部分
+// 锟斤拷锟街达拷锟斤拷锟斤拷锟斤拷锟斤拷锟介长锟斤拷一锟斤拷锟斤拷锟斤拷侄锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷前锟诫部锟斤拷
 void Test3()
 {
     int numbers[] = {2, 2, 2, 2, 2, 1, 3, 4, 5};
     Test("Test3", numbers, sizeof(numbers) / sizeof(int), 2, false);
 }
 
-// 出现次数超过数组长度一半的数字都出现在数组的后半部分
+// 锟斤拷锟街达拷锟斤拷锟斤拷锟斤拷锟斤拷锟介长锟斤拷一锟斤拷锟斤拷锟斤拷侄锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟侥猴拷氩匡拷锟?
 void Test4()
 {
     int numbers[] = {1, 3, 4, 5, 2, 2, 2, 2, 2};
     Test("Test4", numbers, sizeof(numbers) / sizeof(int), 2, false);
 }
 
-// 输入空指针
+// 锟斤拷锟斤拷锟街革拷锟?
 void Test5()
 {
    int numbers[] = {1};
    Test("Test5", numbers, 1, 1, false);
 }
 
-// 输入空指针
+// 锟斤拷锟斤拷锟街革拷锟?
 void Test6()
 {
     Test("Test6", nullptr, 0, 0, true);

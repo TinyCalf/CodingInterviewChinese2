@@ -8,13 +8,13 @@ https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
 *******************************************************************/
 
 //==================================================================
-// ¡¶½£Ö¸Offer¡ª¡ªÃûÆóÃæÊÔ¹Ù¾«½²µäÐÍ±à³ÌÌâ¡·´úÂë
-// ×÷Õß£ººÎº£ÌÎ
+// ï¿½ï¿½ï¿½ï¿½Ö¸Offerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¹Ù¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í±ï¿½ï¿½ï¿½â¡·ï¿½ï¿½ï¿½ï¿½
+// ï¿½ï¿½ï¿½ß£ï¿½ï¿½Îºï¿½ï¿½ï¿½
 //==================================================================
 
-// ÃæÊÔÌâ40£º×îÐ¡µÄk¸öÊý
-// ÌâÄ¿£ºÊäÈën¸öÕûÊý£¬ÕÒ³öÆäÖÐ×îÐ¡µÄk¸öÊý¡£ÀýÈçÊäÈë4¡¢5¡¢1¡¢6¡¢2¡¢7¡¢3¡¢8
-// Õâ8¸öÊý×Ö£¬Ôò×îÐ¡µÄ4¸öÊý×ÖÊÇ1¡¢2¡¢3¡¢4¡£
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½40ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½kï¿½ï¿½ï¿½ï¿½
+// ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½kï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½4ï¿½ï¿½5ï¿½ï¿½1ï¿½ï¿½6ï¿½ï¿½2ï¿½ï¿½7ï¿½ï¿½3ï¿½ï¿½8
+// ï¿½ï¿½8ï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½4ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½2ï¿½ï¿½3ï¿½ï¿½4ï¿½ï¿½
 
 #include <cstdio>
 #include "..\Utilities\Array.h"
@@ -26,34 +26,71 @@ https://github.com/zhedahht/CodingInterviewChinese2/blob/master/LICENSE.txt)
 
 using namespace std;
 
-// ====================·½·¨1====================
-void GetLeastNumbers_Solution1(int* input, int n, int* output, int k)
-{
-    if(input == nullptr || output == nullptr || k > n || n <= 0 || k <= 0)
-        return;
+// ====================ï¿½ï¿½ï¿½ï¿½1====================
+// void GetLeastNumbers_Solution1(int* input, int n, int* output, int k)
+// {
+//     if(input == nullptr || output == nullptr || k > n || n <= 0 || k <= 0)
+//         return;
 
-    int start = 0;
-    int end = n - 1;
-    int index = Partition(input, n, start, end);
-    while(index != k - 1)
-    {
-        if(index > k - 1)
-        {
-            end = index - 1;
-            index = Partition(input, n, start, end);
-        }
-        else
-        {
-            start = index + 1;
-            index = Partition(input, n, start, end);
+//     int start = 0;
+//     int end = n - 1;
+//     int index = Partition(input, n, start, end);
+//     while(index != k - 1)
+//     {
+//         if(index > k - 1)
+//         {
+//             end = index - 1;
+//             index = Partition(input, n, start, end);
+//         }
+//         else
+//         {
+//             start = index + 1;
+//             index = Partition(input, n, start, end);
+//         }
+//     }
+
+//     for(int i = 0; i < k; ++i)
+//         output[i] = input[i];
+// }
+
+void Part(int* numbers, int length, int start , int end, int k) {
+    if(start >= end)
+        return;
+    int chosenIndex = start;
+    for(int i = start + 1; i <= end; i ++) {
+        if(numbers[i] < numbers[chosenIndex]) {
+            int tmp = numbers[i];
+			for (int j = i - 1; j >= chosenIndex; j--) {
+                numbers[j+1] = numbers[j];
+            }
+            numbers[chosenIndex] = tmp;
+            chosenIndex ++;
         }
     }
-
-    for(int i = 0; i < k; ++i)
-        output[i] = input[i];
+    if(chosenIndex == k - 1) {
+        return;
+    }else if(chosenIndex > k - 1) {
+        return Part(numbers, length, start, chosenIndex - 1, k);
+    }else {
+        return Part(numbers, length, chosenIndex + 1 , end, k);
+    }
 }
 
-// ====================·½·¨2====================
+void GetLeastNumbers_Solution1(int* input, int n, int* output, int k) {
+    if(input == nullptr || n < 1) 
+        return;
+	if (k > n) {
+		k = n;
+	}
+
+    Part(input, n, 0, n - 1, k);
+    for(int i = 0; i< k; i++) {
+        output[i] = input[i];
+    }
+    return;
+}
+
+// ====================ï¿½ï¿½ï¿½ï¿½2====================
 typedef multiset<int, std::greater<int> >            intSet;
 typedef multiset<int, std::greater<int> >::iterator  setIterator;
 
@@ -83,7 +120,7 @@ void GetLeastNumbers_Solution2(const vector<int>& data, intSet& leastNumbers, in
     }
 }
 
-// ====================²âÊÔ´úÂë====================
+// ====================ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½====================
 void Test(char* testName, int* data, int n, int* expectedResult, int k)
 {
     if(testName != nullptr)
@@ -124,7 +161,7 @@ void Test(char* testName, int* data, int n, int* expectedResult, int k)
     printf("\n\n");
 }
 
-// kÐ¡ÓÚÊý×éµÄ³¤¶È
+// kÐ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½
 void Test1()
 {
     int data[] = {4, 5, 1, 6, 2, 7, 3, 8};
@@ -132,7 +169,7 @@ void Test1()
     Test("Test1", data, sizeof(data) / sizeof(int), expected, sizeof(expected) / sizeof(int));
 }
 
-// kµÈÓÚÊý×éµÄ³¤¶È
+// kï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½
 void Test2()
 {
     int data[] = {4, 5, 1, 6, 2, 7, 3, 8};
@@ -140,7 +177,7 @@ void Test2()
     Test("Test2", data, sizeof(data) / sizeof(int), expected, sizeof(expected) / sizeof(int));
 }
 
-// k´óÓÚÊý×éµÄ³¤¶È
+// kï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½
 void Test3()
 {
     int data[] = {4, 5, 1, 6, 2, 7, 3, 8};
@@ -148,7 +185,7 @@ void Test3()
     Test("Test3", data, sizeof(data) / sizeof(int), expected, 10);
 }
 
-// kµÈÓÚ1
+// kï¿½ï¿½ï¿½ï¿½1
 void Test4()
 {
     int data[] = {4, 5, 1, 6, 2, 7, 3, 8};
@@ -156,7 +193,7 @@ void Test4()
     Test("Test4", data, sizeof(data) / sizeof(int), expected, sizeof(expected) / sizeof(int));
 }
 
-// kµÈÓÚ0
+// kï¿½ï¿½ï¿½ï¿½0
 void Test5()
 {
     int data[] = {4, 5, 1, 6, 2, 7, 3, 8};
@@ -164,7 +201,7 @@ void Test5()
     Test("Test5", data, sizeof(data) / sizeof(int), expected, 0);
 }
 
-// Êý×éÖÐÓÐÏàÍ¬µÄÊý×Ö
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void Test6()
 {
     int data[] = {4, 5, 1, 6, 2, 7, 2, 8};
@@ -172,7 +209,7 @@ void Test6()
     Test("Test6", data, sizeof(data) / sizeof(int), expected, sizeof(expected) / sizeof(int));
 }
 
-// ÊäÈë¿ÕÖ¸Õë
+// ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 void Test7()
 {
     int* expected = nullptr;

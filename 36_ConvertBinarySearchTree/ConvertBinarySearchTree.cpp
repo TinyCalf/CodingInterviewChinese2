@@ -55,25 +55,25 @@ void ConvertNode(BinaryTreeNode* pNode, BinaryTreeNode** pLastNodeInList);
 //         ConvertNode(pCurrent->m_pRight, pLastNodeInList);
 // }
 
-BinaryTreeNode* Convert(BinaryTreeNode* pRootOfTree) {
-    ConvertCore(pRootOfTree, nullptr);
-    return pRootOfTree;
-}
 
-BinaryTreeNode* ConvertCore(BinaryTreeNode* pRoot, BinaryTreeNode* pBefore) {
+
+BinaryTreeNode* ConvertCore(
+    BinaryTreeNode* pRoot, 
+    BinaryTreeNode* pBefore,
+    BinaryTreeNode* pLeft,
+    BinaryTreeNode* pRight
+) {
     if(pRoot == nullptr) 
         return nullptr;
 
-    BinaryTreeNode* pLeftLast = ConvertCore(pRoot->m_pLeft, pRoot);
-    BinaryTreeNode* pRightLast = pLeftLast ? 
-        ConvertCore(pRoot->m_pRight, pRoot) :
-        ConvertCore(pRoot->m_pRight, pLeftLast);
+    ConvertCore(pRoot->m_pLeft, pBefore,)
 
-    pRoot->m_pLeft = pBefore;
-    if(pBefore != nullptr)
-        pBefore->m_pRight = pRoot;
 
-    return pRight || pLeftLast || pRoot;
+}
+
+BinaryTreeNode* Convert(BinaryTreeNode* pRootOfTree) {
+	ConvertCore(pRootOfTree, nullptr);
+	return pRootOfTree;
 }
 
 // ====================≤‚ ‘¥˙¬Î====================
